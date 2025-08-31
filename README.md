@@ -136,6 +136,6 @@ def printRepo(endpoint: str, username: Optional[str] = None, password: Optional[
 
 
 if __name__ == "__main__":
-    printRepo(endpoint="http://127.0.0.1:8081/opendma/")
+    printRepo(endpoint="http://127.0.0.1:8080/opendma/")
 
 ```
