@@ -271,9 +271,6 @@ class PagingReferenceIterable(Iterable[OdmaObject]):
                 if object_data.rootOdmaClassName is None:
                     wire = self._connection.get_object_wire_data(repository_id=self._repository_id, object_id=object_data.id, include=None)
                     referenced_object_data = object_data_from_wire(wire=wire, connection=self._connection, repository_id=self._repository_id)
-                    # ----------------------------------------------------------------------------------------------------------- TODO
-                    if object_data.id != referenced_object_data.id:
-                        raise OdmaServiceException(f"Object ID mismatch on fetched object: expected {object_data.id}, got {referenced_object_data.id}")
                     object = odma_object_from_object_data(referenced_object_data, self._connection, self._repository_id)
                     if not isinstance(object, OdmaObject):
                         raise OdmaServiceException(f"Failed resolving objects on page of property {self._prop_name}")
@@ -326,11 +323,6 @@ class LazyRemotePropertyObjectValueProvider:
     def resolve_property_value(self) -> Any:
         wire = self._connection.get_object_wire_data(repository_id=self._repository_id, object_id=self._object_id)
         object_data = object_data_from_wire(wire=wire, connection=self._connection, repository_id=self._repository_id)
-        # ----------------------------------------------------------------------------------------------------------- TODO
-        #########################################################################################################
-        # TODO: an object can be known by multiple IDs. This check might fail if requested by one of it's IDs while the response has another
-        # if self._object_id != object_data.id:
-        #     raise OdmaServiceException(f"Object ID mismatch on fetched object: expected {self._object_id}, got {object_data.id}")
         object = odma_object_from_object_data(object_data, self._connection, self._repository_id)
         if isinstance(object, OdmaObject):
             return object
@@ -610,11 +602,6 @@ class OdmaRemoteSession(OdmaSession):
             include = ";".join(include_parts)
         wire = self._connection.get_object_wire_data(repository_id=repository_id, object_id=object_id, include=include)
         object_data = object_data_from_wire(wire=wire, connection=self._connection, repository_id=repository_id)
-        # ----------------------------------------------------------------------------------------------------------- TODO
-        ####################################################################################################################################################
-        # TODO important
-        #if not (object_id == object_data.id):
-        #    raise OdmaServiceException(f"Object ID mismatch on fetched object: expected {object_id}, got {object_data.id}")
         object = odma_object_from_object_data(object_data, self._connection, repository_id)
         if isinstance(object, OdmaObject):
             return object
