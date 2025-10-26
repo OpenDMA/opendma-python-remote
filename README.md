@@ -9,7 +9,8 @@ This project is not yet available on [PyPI](https://pypi.org/).
 
 To install it locally, check out this git project and run `pip install .`
 
-You need to install then [opendma-python-api](https://github.com/OpenDMA/opendma-python-api) first.
+This project requires the [opendma-python-api](https://github.com/OpenDMA/opendma-python-api)
+which needs to be installed first.
 
 ## Usage
 
@@ -25,7 +26,7 @@ session = opendma.remote.connect(endpoint="http://127.0.0.1:8080/opendma/", user
 ## Example
 
 Follow [this](https://github.com/OpenDMA/opendma-rest-server?tab=readme-ov-file#example)
-documentation to run an OpenDMA rest service on top of a sample repository on your local
+documentation to run an OpenDMA rest service providing a sample repository on your local
 machine.
 
 Make sure that this service is available by opening http://localhost:8080/opendma in a web browser.
