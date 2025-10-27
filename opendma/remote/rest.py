@@ -367,13 +367,13 @@ def _parse_odma_value(wire_prop: OdmaPropertyWireModel, connection: RemoteConnec
                     return isoparse(val)
                 except Exception as e:
                     raise OdmaServiceException(f"Invalid datetime format: '{val!r}'") from e
-            case OdmaType.BLOB:
+            case OdmaType.BINARY:
                 if not isinstance(val, str):
                     raise OdmaServiceException(f"Invalid JSON data type for {wire_prop.type}. Expected string.")
                 try:
                     return b64decode(val)
                 except Exception as e:
-                    raise OdmaServiceException(f"Invalid base64 blob") from e
+                    raise OdmaServiceException(f"Invalid base64 binary") from e
             case OdmaType.REFERENCE:
                 if isinstance(val, dict):
                     object_data = object_data_from_json(data=val, connection=connection, repository_id=repository_id)
