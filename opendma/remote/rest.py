@@ -5,7 +5,7 @@ from base64 import b64decode
 from dateutil.parser import isoparse
 from opendma.api import OdmaType, OdmaQName, OdmaGuid, OdmaId, OdmaContent, OdmaProperty, OdmaPropertyImpl
 from opendma.api import OdmaCoreObject, OdmaObject, OdmaRepository, OdmaSession, OdmaSearchResult, OdmaClass
-from opendma.api import OdmaServiceException, OdmaObjectNotFoundException, OdmaPropertyNotFoundException
+from opendma.api import OdmaServiceException, OdmaObjectNotFoundException, OdmaPropertyNotFoundException, OdmaAuthenticationException
 from opendma.api import odma_create_proxy, PROPERTY_CLASS
 from pydantic import BaseModel, Field, field_validator, ValidationError
 import requests
@@ -109,6 +109,10 @@ class RemoteConnection:
             response = self._session.get(url)
             if self._trace_requests > 1:
                 print(f"<<<< Duration: {response.elapsed.total_seconds() * 1000:.0f}ms")
+
+            if response.status_code == 401:
+                raise OdmaAuthenticationException()
+
             response.raise_for_status()
             data = response.json()
             if self._trace_requests > 2:
@@ -141,6 +145,8 @@ class RemoteConnection:
             if self._trace_requests > 1:
                 print(f"<<<< Duration: {response.elapsed.total_seconds() * 1000:.0f}ms")
 
+            if response.status_code == 401:
+                raise OdmaAuthenticationException()
             if response.status_code == 404:
                 object_id_value = object_id if object_id is not None else OdmaId("Repository not found")
                 raise OdmaObjectNotFoundException(objectGuid=OdmaGuid(object_id_value, repository_id))
@@ -169,6 +175,10 @@ class RemoteConnection:
             response = self._session.post(url, json=payload)
             if self._trace_requests > 1:
                 print(f"<<<< Duration: {response.elapsed.total_seconds() * 1000:.0f}ms")
+
+            if response.status_code == 401:
+                raise OdmaAuthenticationException()
+
             response.raise_for_status()
             data = response.json()
             if self._trace_requests > 2:
