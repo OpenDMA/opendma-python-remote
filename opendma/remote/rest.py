@@ -148,8 +148,7 @@ class RemoteConnection:
             if response.status_code == 401:
                 raise OdmaAuthenticationException()
             if response.status_code == 404:
-                object_id_value = object_id if object_id is not None else OdmaId("Repository not found")
-                raise OdmaObjectNotFoundException(objectGuid=OdmaGuid(object_id_value, repository_id))
+                raise OdmaObjectNotFoundException(repositoryId=repository_id, objectId=object_id)
 
             response.raise_for_status()
             data = response.json()
