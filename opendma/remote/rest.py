@@ -567,10 +567,10 @@ class OdmaRemoteCoreObject(OdmaCoreObject):
         while test is not None:
             if test.get_qname() == class_or_aspect_name:
                 return True
-            aspects = test.get_aspects()
+            aspects = test.get_included_aspects()
             if aspects is not None:
-                for declared_aspect in aspects:
-                    if declared_aspect.get_qname() == class_or_aspect_name:
+                for aspect in aspects:
+                    if aspect.get_qname() == class_or_aspect_name:
                         return True
             test = test.get_super_class()
         return False
