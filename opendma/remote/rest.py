@@ -6,7 +6,7 @@ from dateutil.parser import isoparse
 from opendma.api import OdmaType, OdmaQName, OdmaGuid, OdmaId, OdmaContent, OdmaProperty, OdmaPropertyImpl
 from opendma.api import OdmaCoreObject, OdmaObject, OdmaRepository, OdmaSession, OdmaSearchResult, OdmaClass
 from opendma.api import OdmaServiceException, OdmaObjectNotFoundException, OdmaPropertyNotFoundException, OdmaAuthenticationException
-from opendma.api import odma_create_proxy, PROPERTY_CLASS
+from opendma.api import odma_create_proxy, PROPERTY_CLASS, PROPERTY_ASPECTS
 from pydantic import BaseModel, Field, field_validator, ValidationError
 import requests
 from requests.auth import HTTPBasicAuth
@@ -573,6 +573,11 @@ class OdmaRemoteCoreObject(OdmaCoreObject):
                     if aspect.get_qname() == class_or_aspect_name:
                         return True
             test = test.get_super_class()
+        for aspect in self._internal_get_odma_aspects():
+            while aspect is not None:
+                if aspect.get_qname() == class_or_aspect_name:
+                    return True
+                aspect = aspect.get_super_class()
         return False
     
     def _internal_get_odma_class(self) -> OdmaClass:
@@ -580,6 +585,9 @@ class OdmaRemoteCoreObject(OdmaCoreObject):
         if isinstance(clazz, OdmaClass):
             return clazz
         raise OdmaServiceException("Invalid class of object")
+    
+    def _internal_get_odma_aspects(self) -> Iterable[OdmaClass]:
+        return self.get_property(PROPERTY_ASPECTS).get_reference_iterable()
 
 
 class OdmaRemoteSession(OdmaSession):
