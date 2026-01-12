@@ -5,7 +5,7 @@ from base64 import b64decode
 from dateutil.parser import isoparse
 from opendma.api import OdmaType, OdmaQName, OdmaGuid, OdmaId, OdmaContent, OdmaProperty, OdmaPropertyImpl
 from opendma.api import OdmaCoreObject, OdmaObject, OdmaRepository, OdmaSession, OdmaSearchResult, OdmaClass
-from opendma.api import OdmaServiceException, OdmaObjectNotFoundException, OdmaPropertyNotFoundException, OdmaAuthenticationException
+from opendma.api import OdmaServiceException, OdmaObjectNotFoundException, OdmaPropertyNotFoundException, OdmaAuthenticationException, OdmaQuerySyntaxException
 from opendma.api import odma_create_proxy, PROPERTY_CLASS, PROPERTY_ASPECTS
 from pydantic import BaseModel, Field, field_validator, ValidationError
 import requests
@@ -175,8 +175,12 @@ class RemoteConnection:
             if self._trace_requests > 1:
                 print(f"<<<< Duration: {response.elapsed.total_seconds() * 1000:.0f}ms")
 
+            if response.status_code == 400:
+                raise OdmaQuerySyntaxException(response.text)
             if response.status_code == 401:
                 raise OdmaAuthenticationException()
+            if response.status_code == 404:
+                raise OdmaObjectNotFoundException(repositoryId=repository_id)
 
             response.raise_for_status()
             data = response.json()
