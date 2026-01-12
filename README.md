@@ -5,12 +5,10 @@ for an introduction to OpenDMA and it's Python API.
 
 ## Installation
 
-This project is not yet available on [PyPI](https://pypi.org/).
-
-To install it locally, check out this git project and run `pip install .`
-
-This project requires the [opendma-python-api](https://github.com/OpenDMA/opendma-python-api)
-which needs to be installed first.
+This project is available on [PyPI](https://pypi.org/). You can simply install it with pip:
+```
+pip install opendma-remote
+```
 
 ## Usage
 
