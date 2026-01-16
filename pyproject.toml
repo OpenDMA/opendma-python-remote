@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "opendma-remote"
-version = "0.8"
+version = "0.8.0.dev0"
 description = "OpenDMA REST client to access OpenDMA repositories via REST"
 readme = "README.md"
-license = "MIT" 
+license = "MIT"
 dependencies = [
-    "opendma-api>=0.8",
+    "opendma-api>=0.8.0",
     "pydantic>=2.6,<3.0.0",
     "requests>=2,<3",
     "python-dateutil>=2.8.2"
