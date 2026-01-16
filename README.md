@@ -3,6 +3,8 @@
 Please see [OpenDMA API for Python](https://github.com/OpenDMA/opendma-python-api)
 for an introduction to OpenDMA and it's Python API.
 
+Provides an OpenDMA Adaptor consuming the [OpenDMA REST API](https://github.com/OpenDMA/opendma-spec/blob/main/opendma-rest-api-spec.yaml).
+
 ## Installation
 
 This project is available on [PyPI](https://pypi.org/). You can simply install it with pip:
@@ -18,16 +20,41 @@ with a REST-ful OpenDMA service:
 ```python
 import opendma.remote
 
-session = opendma.remote.connect(endpoint="http://127.0.0.1:8080/opendma/", username="user", password="secret")
+session = opendma.remote.connect(endpoint="http://127.0.0.1:8080/opendma/",
+                                 username="user",
+								 password="secret")
 ```
 
 ## Example
 
-Follow [this](https://github.com/OpenDMA/opendma-rest-server?tab=readme-ov-file#example)
-documentation to run an OpenDMA rest service providing a sample repository on your local
-machine.
+Run the tutorial REST service docker container:
+```
+docker run -p 8080:8080 ghcr.io/opendma/tutorial-xmlrepo:0.8
+```
 
-Make sure that this service is available by opening http://localhost:8080/opendma in a web browser.
+It will provide the tutorial xml repository. Make sure that this service is available
+by opening http://localhost:8080/opendma in a web browser.
+
+<details>
+  <summary>Troubleshooting</summary>
+  
+  If the GitHub Container Registry (ghcr.io) is blocked in your environment, you can use our mirror on Docker Hub:
+  ```
+  docker run -p 8080:8080 opendma/tutorial-xmlrepo:latest
+  ```
+
+  If the local port 8080 is already in use, you can map to a different port, e.g. 8090:
+  ```
+  docker run -p 8090:8080 ghcr.io/opendma/tutorial-xmlrepo:latest
+  ```
+
+  To run in deamon mode in the background:
+  ```
+  docker run -d --name opendma-tutorial-xmlrepo -p 8080:8080 ghcr.io/opendma/tutorial-xmlrepo:latest
+  ```
+
+</details>
+
 
 The following python application will establish a connection to this service and print out
 the entire repository:
