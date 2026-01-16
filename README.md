@@ -33,7 +33,9 @@ docker run -p 8080:8080 ghcr.io/opendma/tutorial-xmlrepo:0.8
 ```
 
 It will provide the tutorial xml repository. Make sure that this service is available
-by opening http://localhost:8080/opendma in a web browser.
+by opening  
+http://localhost:8080/opendma  
+in a web browser.
 
 <details>
   <summary>Troubleshooting</summary>
