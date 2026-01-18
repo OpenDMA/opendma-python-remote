@@ -22,7 +22,7 @@ import opendma.remote
 
 session = opendma.remote.connect(endpoint="http://127.0.0.1:8080/opendma/",
                                  username="user",
-								 password="secret")
+                                 password="secret")
 ```
 
 ## Example
